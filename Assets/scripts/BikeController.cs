@@ -20,7 +20,11 @@ public class BikeController : MonoBehaviour {
 
     private void OnTriggerEnter2D (Collider2D other)
     {
-        Debug.Log (other.name);
+        Debug.Log (other.gameObject.name);
+        if (other.transform.parent.gameObject.tag == "Player")
+        {
+            GameManager.Instance.GameOver (transform.parent.gameObject);
+        }
     }
 
 }
