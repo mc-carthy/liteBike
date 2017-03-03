@@ -7,6 +7,8 @@ public class Trail : MonoBehaviour {
 
     [SerializeField]
     private float pointSpacing;
+    [SerializeField]
+    private Transform bike;
 
 	private LineRenderer line;
     private List<Vector2> points;
@@ -24,7 +26,7 @@ public class Trail : MonoBehaviour {
 
     private void Update ()
     {
-        if (Vector3.Distance (points.Last (), transform.position) > pointSpacing)
+        if (Vector3.Distance (points.Last (), bike.position) > pointSpacing)
         {
             SetPoint ();
         }
@@ -32,10 +34,10 @@ public class Trail : MonoBehaviour {
 
     private void SetPoint ()
     {
-        points.Add (transform.position);
+        points.Add (bike.position);
 
         line.numPositions = points.Count;
-        line.SetPosition (points.Count - 1, transform.position);
+        line.SetPosition (points.Count - 1, bike.position);
     }
 
 }
