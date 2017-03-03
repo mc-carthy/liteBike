@@ -37,15 +37,15 @@ public class Trail : MonoBehaviour {
 
     private void SetPoint ()
     {
-        points.Add (bike.position);
-
-        line.numPositions = points.Count;
-        line.SetPosition (points.Count - 1, bike.position);
-
         if (points.Count > 1)
         {
             col.points = points.ToArray<Vector2> ();
         }
+
+        points.Add (bike.position);
+
+        line.numPositions = points.Count;
+        line.SetPosition (points.Count - 1, bike.position);
     }
 
 }
