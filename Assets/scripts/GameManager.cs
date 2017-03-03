@@ -1,20 +1,36 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : Singleton<GameManager> {
 
     [SerializeField]
     private Material quadMaterial;
+    [SerializeField]
+    private Text gameOverText;
 
+    private BikeController[] players;
     private int border = 5;
+
+    protected override void Awake ()
+    {
+        base.Awake ();
+        players = GameObject.FindObjectsOfType<BikeController> ();
+        gameOverText.text = "";
+    }
 
     private void Start ()
     {
+        gameOverText.enabled = false;
         CreateGrid ();
     }
 
 	public void GameOver (GameObject player)
     {
-        Debug.Log (player.name + " loses!");
+        int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
+        StartCoroutine (GameOverRoutine (loserNum));
+
     }
 
     private void CreateGrid ()
@@ -31,6 +47,23 @@ public class GameManager : Singleton<GameManager> {
                 quad.transform.parent = transform;
             }
         }
+    }
+
+    private IEnumerator GameOverRoutine (int loserNum)
+    {
+        foreach (BikeController bike in players)
+        {
+            bike.speed = 0;
+            bike.rotSpeed = 0;
+        }
+
+        gameOverText.text = loserNum == 1 ? "Player 2 wins" : "Player 1 wins";
+        gameOverText.enabled = true;
+        
+        yield return new WaitForSeconds (5f);
+
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().name, LoadSceneMode.Single);
+
     }
 
 }
