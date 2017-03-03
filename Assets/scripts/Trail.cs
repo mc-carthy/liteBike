@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 [RequireComponent (typeof (LineRenderer))]
+[RequireComponent (typeof (EdgeCollider2D))]
 public class Trail : MonoBehaviour {
 
     [SerializeField]
@@ -11,11 +12,13 @@ public class Trail : MonoBehaviour {
     private Transform bike;
 
 	private LineRenderer line;
+	private EdgeCollider2D col;
     private List<Vector2> points;
 
     private void Awake ()
     {
         line = GetComponent<LineRenderer> ();
+        col = GetComponent<EdgeCollider2D> ();
         points = new List<Vector2> ();
     }
 
@@ -38,6 +41,11 @@ public class Trail : MonoBehaviour {
 
         line.numPositions = points.Count;
         line.SetPosition (points.Count - 1, bike.position);
+
+        if (points.Count > 1)
+        {
+            col.points = points.ToArray<Vector2> ();
+        }
     }
 
 }
