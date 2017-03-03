@@ -28,6 +28,7 @@ public class GameManager : Singleton<GameManager> {
 
 	public void GameOver (GameObject player)
     {
+        Debug.Log (player.name);
         int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
         StartCoroutine (GameOverRoutine (loserNum));
 
@@ -60,7 +61,7 @@ public class GameManager : Singleton<GameManager> {
         gameOverText.text = loserNum == 1 ? "Player 2 wins" : "Player 1 wins";
         gameOverText.enabled = true;
         
-        yield return new WaitForSeconds (5f);
+        yield return new WaitForSeconds (3f);
 
         SceneManager.LoadScene (SceneManager.GetActiveScene ().name, LoadSceneMode.Single);
 

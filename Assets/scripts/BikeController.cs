@@ -5,7 +5,15 @@ public class BikeController : MonoBehaviour {
     public float speed;
     public float rotSpeed;
 
+    private ParticleSystem partSys;
+    private SpriteRenderer sprRen;
     private float horizontal;
+
+    private void Awake ()
+    {
+        partSys = GetComponentInChildren<ParticleSystem> ();
+        sprRen = GetComponent<SpriteRenderer> ();
+    }
 
 	private void Update ()
     {
@@ -20,11 +28,14 @@ public class BikeController : MonoBehaviour {
 
     private void OnTriggerEnter2D (Collider2D other)
     {
-        if (other.transform.parent.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-            GameManager.Instance.GameOver (transform.parent.gameObject);
             speed = 0f;
             rotSpeed = 0f;
+            partSys.Play ();
+            sprRen.enabled = false;
+
+            GameManager.Instance.GameOver (transform.parent.gameObject);
         }
     }
 
