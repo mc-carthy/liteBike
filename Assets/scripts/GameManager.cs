@@ -5,6 +5,13 @@ using System.Collections;
 
 public class GameManager : Singleton<GameManager> {
 
+    private bool isGameOver;
+    public bool IsGameOver {
+        get {
+            return isGameOver;
+        }
+    }
+    
     [SerializeField]
     private Material quadMaterial;
     [SerializeField]
@@ -28,10 +35,12 @@ public class GameManager : Singleton<GameManager> {
 
 	public void GameOver (GameObject player)
     {
-        Debug.Log (player.name);
-        int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
-        StartCoroutine (GameOverRoutine (loserNum));
-
+        if (!isGameOver)
+        {
+            isGameOver = true;
+            int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
+            StartCoroutine (GameOverRoutine (loserNum));
+        }
     }
 
     private void CreateGrid ()
