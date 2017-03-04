@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager> {
     private Text gameOverText;
 
     private BikeController[] players;
+    private float gameoverDelay = 3f;
     private int border = 5;
 
     protected override void Awake ()
@@ -39,6 +40,7 @@ public class GameManager : Singleton<GameManager> {
         {
             isGameOver = true;
             int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
+            PlaySfxThroughGameController (SoundManager.Instance.GameOverSound);
             StartCoroutine (GameOverRoutine (loserNum));
         }
     }
@@ -69,11 +71,17 @@ public class GameManager : Singleton<GameManager> {
 
         gameOverText.text = loserNum == 1 ? "Player 2 wins" : "Player 1 wins";
         gameOverText.enabled = true;
-        
-        yield return new WaitForSeconds (3f);
+        StartCoroutine (SoundManager.Instance.ReduceMusicVolumeOverTime (gameoverDelay));
+        yield return new WaitForSeconds (gameoverDelay);
 
         SceneManager.LoadScene (SceneManager.GetActiveScene ().name, LoadSceneMode.Single);
 
     }
+
+	private void PlaySfxThroughGameController (AudioClip clip, float volMultiplier = 1.0f) {
+		if (SoundManager.Instance.IsSfxEnabled && clip) {
+			AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, Mathf.Clamp(SoundManager.Instance.SfxVolume * volMultiplier, 0.05f, 1f));
+		}
+	}
 
 }
