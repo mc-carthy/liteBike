@@ -21,7 +21,7 @@ public class IconToggle : MonoBehaviour {
 	}
 
 	[SerializeField]
-	private bool isOnByDefault = true;
+	private bool isOnByDefault;
 	private Image image;
 
 	private void Start () {

@@ -11,15 +11,12 @@ public class GameManager : Singleton<GameManager> {
             return isGameOver;
         }
     }
-    
-    [SerializeField]
-    private Material quadMaterial;
+
     [SerializeField]
     private Text gameOverText;
 
     private BikeController[] players;
     private float gameoverDelay = 3f;
-    private int border = 5;
 
     protected override void Awake ()
     {
@@ -31,7 +28,6 @@ public class GameManager : Singleton<GameManager> {
     private void Start ()
     {
         gameOverText.enabled = false;
-        CreateGrid ();
     }
 
 	public void GameOver (GameObject player)
@@ -42,22 +38,6 @@ public class GameManager : Singleton<GameManager> {
             int loserNum = (int.Parse(player.name.Substring (player.name.Length - 1)));
             PlaySfxThroughGameController (SoundManager.Instance.GameOverSound);
             StartCoroutine (GameOverRoutine (loserNum));
-        }
-    }
-
-    private void CreateGrid ()
-    {
-        Vector3 screenWorldSize = Camera.main.ScreenToWorldPoint (new Vector3 (Screen.width, Screen.height, 0f));
-        for (int x = (int)-screenWorldSize.x - border; x < (int)screenWorldSize.x + border; x++)
-        {
-            for (int y = (int)-screenWorldSize.y - border; y < (int)screenWorldSize.y + border; y++)
-            {
-                GameObject quad = GameObject.CreatePrimitive (PrimitiveType.Quad);
-                quad.GetComponent<MeshRenderer> ().material = quadMaterial;
-                quad.transform.position = new Vector3 (x, y, 1f);
-                quad.transform.localScale = Vector3.one * 0.975f;
-                quad.transform.parent = transform;
-            }
         }
     }
 

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundManager : Singleton<SoundManager> {
+public class SoundManager : MonoBehaviour {
+
+	public static SoundManager Instance;
 
 	[SerializeField]
 	private IconToggle musicIconToggle;
@@ -69,6 +71,15 @@ public class SoundManager : Singleton<SoundManager> {
 	private AudioClip[] musicClips;
 	private AudioClip backgroundMusic;
 	private AudioClip randomMusicClip;
+
+	private void Awake () {
+		if (Instance == null) {
+			Instance = this;
+			// DontDestroyOnLoad(this.gameObject);
+		} else {
+			Destroy(gameObject);
+		}
+	}
 
 	private void Start () {
 		backgroundMusic = GetRandomClip(musicClips);

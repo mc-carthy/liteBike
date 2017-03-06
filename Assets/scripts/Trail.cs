@@ -18,6 +18,7 @@ public class Trail : MonoBehaviour {
     private void Awake ()
     {
         line = GetComponent<LineRenderer> ();
+        line.sortingOrder = -1;
         col = GetComponent<EdgeCollider2D> ();
         points = new List<Vector2> ();
     }
