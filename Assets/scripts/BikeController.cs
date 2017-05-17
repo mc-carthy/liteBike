@@ -4,6 +4,7 @@ public class BikeController : MonoBehaviour {
 
     public float speed;
     public float rotSpeed;
+    public bool isControllable;
 
     private ParticleSystem partSys;
     private SpriteRenderer sprRen;
@@ -22,8 +23,11 @@ public class BikeController : MonoBehaviour {
 
     private void FixedUpdate ()
     {
-        transform.Translate (Vector2.up * speed * Time.fixedDeltaTime, Space.Self);
-        transform.Rotate (Vector3.forward * rotSpeed * -horizontal * Time.fixedDeltaTime);
+        if (isControllable)
+        {
+            transform.Translate (Vector2.up * speed * Time.fixedDeltaTime, Space.Self);
+            transform.Rotate (Vector3.forward * rotSpeed * -horizontal * Time.fixedDeltaTime);
+        }
     }
 
     private void OnTriggerEnter2D (Collider2D other)

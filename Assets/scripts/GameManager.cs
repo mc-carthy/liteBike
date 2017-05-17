@@ -17,17 +17,27 @@ public class GameManager : Singleton<GameManager> {
 
     private BikeController[] players;
     private float gameoverDelay = 3f;
+    private bool isPlaying;
 
     protected override void Awake ()
     {
         base.Awake ();
         players = GameObject.FindObjectsOfType<BikeController> ();
-        gameOverText.text = "";
+        gameOverText.text = "Press Space to begin";
     }
 
     private void Start ()
     {
         gameOverText.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (!isPlaying && Input.GetKeyDown(KeyCode.Space))
+        {
+            isPlaying = true;
+            SetPlayerControl(true);
+        }
     }
 
 	public void GameOver (GameObject player)
@@ -43,11 +53,7 @@ public class GameManager : Singleton<GameManager> {
 
     private IEnumerator GameOverRoutine (int loserNum)
     {
-        foreach (BikeController bike in players)
-        {
-            bike.speed = 0;
-            bike.rotSpeed = 0;
-        }
+        SetPlayerControl(false);
 
         gameOverText.text = loserNum == 1 ? "Player 2 wins" : "Player 1 wins";
         gameOverText.enabled = true;
@@ -63,5 +69,13 @@ public class GameManager : Singleton<GameManager> {
 			AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, Mathf.Clamp(SoundManager.Instance.SfxVolume * volMultiplier, 0.05f, 1f));
 		}
 	}
+
+    private void SetPlayerControl(bool isControllable)
+    {
+        foreach(BikeController bike in players)
+        {
+            bike.isControllable = isControllable;
+        }
+    }
 
 }
